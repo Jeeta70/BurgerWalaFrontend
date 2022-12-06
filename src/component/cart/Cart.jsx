@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import burger1 from "../../assets/burger1.png";
 import burger2 from "../../assets/burger2.png";
@@ -32,9 +32,40 @@ const Cart = () => {
     total,
     shippingInfo,
   } = useSelector((state) => state.cart);
-  // console.log(cartItems);
-  const increment = (item) => {};
-  const decrement = (item) => {};
+  useEffect(() => {
+    dispatch({ type: "calculatePrice" });
+  }, [cheeseBurger,subTotal]);
+
+
+  const dispatch = useDispatch();
+  const increment = (item) => {
+    switch (item) {
+      case 1:
+        dispatch({ type: "cheeseBurgerIncrement" });
+        break;
+      case 2:
+        dispatch({ type: "vegCheeseBurgerIncrement" });
+        break;
+      case 3:
+        dispatch({ type: "burgerWithFriesIncrement" });
+      default:
+        break;
+    }
+  };
+  const decrement = (item) => {
+    switch (item) {
+      case 1:
+        dispatch({ type: "cheeseBurgerDecrement" });
+        break;
+      case 2:
+        dispatch({ type: "vegCheeseBurgerDecrement" });
+        break;
+      case 3:
+        dispatch({ type: "burgerWithFriesDecrement" });
+      default:
+        break;
+    }
+  };
   return (
     <section className="cart">
       <main>
@@ -43,7 +74,7 @@ const Cart = () => {
           img={burger1}
           value={cheeseBurger}
           increment={() => increment(1)}
-          // decrement={() => decrement(1)}
+          decrement={() => decrement(1)}
         />
         <CartItem
           title={"Veg Cheese Burger"}
